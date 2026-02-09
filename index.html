@@ -1,0 +1,549 @@
+import React, { useState } from 'react';
+import { 
+  Heart, 
+  ShoppingBag, 
+  Users, 
+  TrendingUp, 
+  CreditCard, 
+  MessageSquare, 
+  MapPin, 
+  Layout, 
+  Award,
+  DollarSign,
+  Calendar,
+  ChevronLeft,
+  Info,
+  Printer,
+  FileText,
+  Zap,
+  CheckCircle2,
+  Music,
+  Palette,
+  Eye,
+  ShieldCheck
+} from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const tabs = [
+    { id: 'overview', label: 'نمای کلی', icon: <Layout size={20} /> },
+    { id: 'strategy', label: 'استراتژی اجرایی', icon: <TrendingUp size={20} /> },
+    { id: 'csr', label: 'کمپین همدلانه', icon: <Heart size={20} /> },
+    { id: 'marketing', label: 'مارکتینگ و CRM', icon: <MessageSquare size={20} /> },
+    { id: 'budget', label: 'بودجه و KPI', icon: <DollarSign size={20} /> },
+    { id: 'print', label: 'نسخه قابل چاپ', icon: <Printer size={20} /> },
+  ];
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const BudgetTable = ({ isPrint = false }) => (
+    <div className={`overflow-x-auto ${isPrint ? 'bg-white text-black' : 'bg-white/5 rounded-xl border border-white/10 p-4'}`}>
+      <table className="w-full text-right border-collapse">
+        <thead>
+          <tr className={`border-b ${isPrint ? 'border-gray-300 text-gray-800' : 'border-white/20 text-amber-400'}`}>
+            <th className="p-3">ردیف</th>
+            <th className="p-3">شرح مورد</th>
+            <th className="p-3">مبلغ (تومان)</th>
+            <th className="p-3">وضعیت / توضیحات</th>
+          </tr>
+        </thead>
+        <tbody className={`${isPrint ? 'text-gray-900' : 'text-gray-300'}`}>
+          {[
+            { id: 1, title: 'دکور هفت‌سین و باکس‌های همدلی', price: '۶۰,۰۰۰,۰۰۰', desc: 'طراحی سنتی لابی و ساخت مکعب‌های پلکسی' },
+            { id: 2, title: 'ساماندهی لایت‌باکس‌های طبقات', price: 'نامشخص', desc: 'نیاز به ممیزی و استعلام قیمت نهایی چاپ و نصب', highlight: true },
+            { id: 3, title: 'اعتبار پنل اسنپ (کد مقصد)', price: '۳۰ تا ۵۰ میلیون', desc: 'شارژ اعتبار جهت سفرهای مشتریان به مقصد مجتمع' },
+            { id: 4, title: 'کمپین پیامکی (انبوه و خوش‌آمد)', price: '۳۰ تا ۵۰ میلیون', desc: 'LBS، پیامک منطقه‌ای و سیستم خوش‌آمدگویی هوشمند' },
+            { id: 5, title: 'بلاگرها و اینفلوئنسرها', price: '۵۰ تا ۱۵۰ میلیون', desc: 'حضور و تولید محتوای ۵ تا ۷ چهره مطرح اهواز' },
+            { id: 6, title: 'چاپ کارت‌ها و بنرهای محیطی', price: '۳۰,۰۰۰,۰۰۰', desc: 'چاپ ۵۰۰۰ کارت همدلی و متریال تبلیغاتی طبقات' },
+            { id: 7, title: 'جوایز و هدایا', price: 'نامشخص', desc: 'تأمین توسط غرفه‌ها و واحدهای تجاری (رایگان)', highlight: true },
+            { id: 8, title: 'تیم اجرایی و پروموترها', price: 'نامشخص', desc: 'تیم ثبت شماره موبایل در ورودی و مدیریت باکس‌ها', highlight: true },
+            { id: 9, title: 'بودجه کل همدلانه (CSR)', price: '۵۰ تا ۱۵۰ میلیون', desc: 'تخصیص مبلغ متناسب با مشارکت نهایی (قابل تعدیل)', special: true },
+          ].map((item) => (
+            <tr key={item.id} className={`border-b ${isPrint ? 'border-gray-200' : 'border-white/5'} ${item.special && !isPrint ? 'bg-emerald-900/20' : ''}`}>
+              <td className="p-3">{item.id}</td>
+              <td className="p-3 font-medium">{item.title}</td>
+              <td className={`p-3 font-mono ${item.highlight && !isPrint ? 'text-yellow-500' : ''}`}>{item.price}</td>
+              <td className="p-3 text-sm">{item.desc}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#0f172a] text-white font-sans selection:bg-gold-500/30" dir="rtl">
+      <style>{`
+        @media print {
+          body { background: white !important; color: black !important; }
+          .no-print { display: none !important; }
+          .print-only { display: block !important; }
+          .page-break { page-break-after: always; }
+          .printable-content { padding: 20px !important; background: white !important; color: black !important; border: none !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; }
+          table { border: 1px solid #ddd !important; }
+          th, td { border: 1px solid #ddd !important; padding: 8px !important; color: black !important; }
+          h1, h2, h3, h4 { color: black !important; }
+          .bg-emerald-900\/20 { background: #f0fdf4 !important; }
+        }
+      `}</style>
+
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-20 no-print">
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-emerald-600 rounded-full blur-[100px]"></div>
+      </div>
+
+      <header className="sticky top-0 z-50 bg-[#0f172a]/80 backdrop-blur-lg border-b border-white/10 px-6 py-4 flex justify-between items-center no-print">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-tr from-amber-600 to-yellow-400 rounded-lg flex items-center justify-center font-bold text-2xl text-slate-900">R</div>
+          <div>
+            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-100">کمپین نوروز ۱۴۰۵ رویال پارس</h1>
+            <p className="text-xs text-slate-400">سند استراتژیک ارائه به مدیریت</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 text-sm font-medium">
+          <span className="flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+            <Calendar size={14} className="text-amber-400" />
+            ۱ اسفند - ۱۵ فروردین
+          </span>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto p-6 pb-20 relative z-10">
+        <nav className="flex flex-wrap gap-2 mb-8 bg-white/5 p-1 rounded-2xl border border-white/10 no-print">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-300 ${
+                activeTab === tab.id 
+                ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-600/20' 
+                : 'hover:bg-white/5 text-slate-400'
+              }`}
+            >
+              {tab.icon}
+              <span className="font-semibold">{tab.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {activeTab === 'overview' && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="lg:col-span-7 bg-white/5 rounded-3xl p-8 border border-white/10 shadow-2xl">
+                <h2 className="text-3xl font-black mb-6 flex items-center gap-3 text-white">
+                  <span className="w-2 h-10 bg-amber-500 rounded-full"></span>
+                  تحول استراتژیک نوروز
+                </h2>
+                <p className="text-slate-300 leading-relaxed text-lg mb-8">
+                  این طرح با رویکردی چندلایه، به دنبال تبدیل ترافیک ورودی به **«تجربه‌ای معنادار و پایدار»** است. با ترکیب ابزارهای نوین فین‌تک، برنامه‌های فرهنگی اصیل و مکانیزم‌های مشارکت اجتماعی، رویال پارس به عنوان مقصدی فراتر از یک مرکز خرید در ذهن مخاطب اهوازی تثبیت خواهد شد.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white/5 p-5 rounded-2xl border border-white/5">
+                    <TrendingUp className="text-emerald-400 mb-3" />
+                    <h3 className="font-bold mb-1">هدف تجاری</h3>
+                    <p className="text-sm text-slate-400">افزایش ۳۰ درصدی پاخور و رشد نرخ تبدیل خرید</p>
+                  </div>
+                  <div className="bg-white/5 p-5 rounded-2xl border border-white/5">
+                    <Heart className="text-pink-400 mb-3" />
+                    <h3 className="font-bold mb-1">مسئولیت اجتماعی</h3>
+                    <p className="text-sm text-slate-400">توزیع هوشمند بودجه خیریه بر اساس مشارکت مردم</p>
+                  </div>
+                  <div className="bg-white/5 p-5 rounded-2xl border border-white/5">
+                    <Palette className="text-amber-400 mb-3" />
+                    <h3 className="font-bold mb-1">اتمسفر فرهنگی</h3>
+                    <p className="text-sm text-slate-400">خلق محیطی اصیل و آرام‌بخش با نمادهای ایرانی</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-5 grid grid-cols-1 gap-6">
+                <div className="bg-gradient-to-br from-blue-900/40 to-slate-900/60 rounded-3xl p-6 border border-blue-500/30">
+                  <h3 className="text-blue-400 font-bold text-lg mb-4 flex items-center gap-2">
+                    <ShieldCheck size={20} /> امنیت برند و حساسیت اجتماعی
+                  </h3>
+                  <p className="text-slate-300 text-sm leading-relaxed italic">
+                    "تمامی برنامه‌های این دوره با در نظر گرفتن شرایط حاکم بر جامعه و با حساسیت استراتژیک بالا طراحی شده‌اند تا از هرگونه حاشیه بصری یا رفتاری پیشگیری شده و شأن برند رویال پارس حفظ گردد."
+                  </p>
+                </div>
+                <div className="bg-white/5 rounded-3xl p-6 border border-white/10 flex flex-col justify-center items-center text-center">
+                   <div className="text-4xl font-black text-amber-500 mb-2 font-mono">۴۵ روز</div>
+                   <div className="text-slate-400 uppercase tracking-widest text-sm">بازه عملیاتی کمپین</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'strategy' && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10 hover:border-amber-500/50 transition-all group">
+                  <div className="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                    <Eye size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">هویت بصری و محیطی</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    ساماندهی لایت‌باکس‌ها، نوسازی تابلوهای راهنما و یکپارچه‌سازی محتوای ویترین‌ها جهت خلق تصویری لوکس و منظم در تمام طبقات.
+                  </p>
+                </div>
+
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10 hover:border-amber-500/50 transition-all group border-blue-500/20">
+                  <div className="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                    <MapPin size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">مهندسی ترافیک انسانی</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    هدایت مشتری از قطب‌های ورودی (لمیز/سی‌بوک) به طبقات فوقانی از طریق مکانیزم‌های پاداش و طراحی مسیرهای تجربه.
+                  </p>
+                </div>
+
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10 hover:border-amber-500/50 transition-all group border-amber-500/20">
+                  <div className="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 mb-6 group-hover:scale-110 transition-transform">
+                    <Music size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">برنامه‌های فرهنگی زنده</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    ایجاد اتمسفر گرم و اصیل با اجرای موسیقی سنتی، هنرهای نمایشی و المان‌های میراثی (با رعایت کامل حساسیت‌های اجتماعی).
+                  </p>
+                </div>
+
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10 hover:border-amber-500/50 transition-all group border-purple-500/20">
+                  <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                    <CreditCard size={28} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">تسهیلات خرید اعتباری</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    پیاده‌سازی درگاه‌های **تارا و اسنپ‌پی** جهت حذف محدودیت‌های نقدینگی و افزایش سبد خرید خریداران در ایام پیک.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 rounded-3xl p-8 border border-white/10">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                  <Info className="text-amber-500" /> نقشه راه عملیاتی (Core Execution Steps)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    "ارسال فراخوان سیستمی به غرفه‌ها جهت جمع‌آوری نرخ تخفیفات",
+                    "بازبینی فنی و ممیزی نوری لایت‌باکس‌های طبقات ۱ تا ۳",
+                    "عقد قرارداد با طراح سفره هفت‌سین آیکونیک با نمادهای سنتی",
+                    "درج شماره و اطلاعات واحد لیزینگ در سیستم اطلاع‌رسانی محیطی",
+                    "شارژ اعتبار پنل اسنپ و تعریف کد اختصاصی مقصد رویال پارس",
+                    "نهایی‌سازی لیست گروه‌های هنری جهت اجرای برنامه‌های فرهنگی",
+                    "دریافت تاییدیه از موسسات خیریه جهت شفافیت مالی کمپین همدلانه",
+                    "آموزش تیم‌های حراست نسبت به پروتکل‌های خوش‌آمدگویی و امنیتی"
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                      <div className="w-6 h-6 bg-amber-500/20 rounded-full flex items-center justify-center text-[10px] text-amber-400 font-bold shrink-0">{idx + 1}</div>
+                      <span className="text-slate-300 text-sm italic">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'csr' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                  <h3 className="text-2xl font-bold mb-4 text-emerald-400 flex items-center gap-2">
+                    <Heart /> مکانیزم مشارکت فعال
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="bg-white/5 p-6 rounded-2xl border border-white/10 text-center">
+                      <div className="text-sm text-slate-400 mb-1">تعداد کارت‌های امتیاز در گردش</div>
+                      <div className="text-3xl font-black text-white font-mono">۵,۰۰۰ عدد</div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1 bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
+                        <div className="text-xs text-slate-400">سقف بودجه حمایتی</div>
+                        <div className="text-xl font-bold font-mono">۵۰ تا ۱۵۰ م</div>
+                      </div>
+                      <div className="flex-1 bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
+                        <div className="text-xs text-slate-400">توزیع بودجه</div>
+                        <div className="text-xl font-bold">انتخاب مشتری</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10">
+                  <h3 className="text-xl font-bold mb-4">باکس‌های شیشه‌ای همدلی</h3>
+                  <p className="text-slate-400 mb-6 leading-relaxed">
+                    ۳ مکعب شیشه‌ای نورانی در کنار هفت‌سین نصب می‌شود تا مشتریان پس از دریافت کارت از غرفه‌ها، رای خود را برای تخصیص کمک هزینه مجتمع در آن‌ها بیندازند:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-r-4 border-emerald-500">
+                      <span className="font-bold">۱. حمایت از کودکان مبتلا به سرطان</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-r-4 border-blue-500">
+                      <span className="font-bold">۲. آزادسازی زندانیان جرایم غیرعمد</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-r-4 border-amber-500">
+                      <span className="font-bold">۳. حمایت از کودکان کم‌برخوردار (کالای اساسی)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-6">
+                 <div className="bg-white/5 p-8 rounded-3xl border border-white/10 flex-1 flex flex-col items-center justify-center text-center">
+                    <div className="w-32 h-32 bg-amber-500/10 rounded-full flex items-center justify-center mb-6 border border-amber-500/30">
+                      <ShoppingBag size={50} className="text-amber-400" />
+                    </div>
+                    <h4 className="text-2xl font-bold mb-2">خلق پیوند عاطفی</h4>
+                    <p className="text-slate-400 max-w-xs leading-relaxed">
+                      ما مشارکت مردم را به «اعتبار اجتماعی برند» تبدیل می‌کنیم. هر فاکتور خرید، یک رای برای ساختن فردایی بهتر خواهد بود.
+                    </p>
+                 </div>
+                 <div className="bg-gradient-to-r from-emerald-600 to-teal-700 p-8 rounded-3xl text-white shadow-xl shadow-emerald-900/20">
+                    <h4 className="text-lg font-bold mb-2">شفافیت و گزارش‌دهی</h4>
+                    <p className="text-white/80 text-sm">
+                      توزیع نهایی مبالغ دقیقاً بر اساس وزن آرای مشتریان صورت گرفته و مستندات آن جهت ایجاد اعتماد عمومی در رسانه‌های مجتمع منتشر خواهد شد.
+                    </p>
+                 </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'marketing' && (
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400">
+                      <MapPin />
+                    </div>
+                    <h3 className="text-xl font-bold">پنل اختصاصی اسنپ</h3>
+                  </div>
+                  <ul className="space-y-4 text-slate-400 text-sm">
+                    <li className="flex items-start gap-2">
+                      <ChevronLeft size={16} className="mt-1 text-blue-400 shrink-0" />
+                      تخصیص اعتبار ۳۰ تا ۵۰ میلیون تومانی جهت تخفیف سفر به مقصد "رویال پارس".
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ChevronLeft size={16} className="mt-1 text-blue-400 shrink-0" />
+                      رفع چالش پارکینگ و ترافیک در روزهای شلوغ اسفند.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ChevronLeft size={16} className="mt-1 text-blue-400 shrink-0" />
+                      کد اختصاصی: <span className="text-white font-mono bg-white/10 px-2 py-0.5 rounded">ROYAL1405</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="bg-white/5 p-8 rounded-3xl border border-white/10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
+                      <MessageSquare />
+                    </div>
+                    <h3 className="text-xl font-bold">سیستم پیامکی CRM</h3>
+                  </div>
+                  <ul className="space-y-4 text-slate-400 text-sm">
+                    <li className="flex items-start gap-2">
+                      <ChevronLeft size={16} className="mt-1 text-purple-400 shrink-0" />
+                      **خوش‌آمدگویی هوشمند:** ارسال خودکار به محض ورود هر نفر به مجتمع.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ChevronLeft size={16} className="mt-1 text-purple-400 shrink-0" />
+                      **تبلیغات منطقه‌ای (LBS):** هدف‌گذاری ساکنان کیانپارس با بودجه ۳۰ تا ۵۰ م.
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <ChevronLeft size={16} className="mt-1 text-purple-400 shrink-0" />
+                      هدف CRM: ثبت حداقل ۲۰,۰۰۰ شماره موبایل جدید در باشگاه مشتریان.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-white/5 p-8 rounded-3xl border border-white/10 flex flex-col md:flex-row items-center gap-8">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Users className="text-amber-500" />
+                    <h3 className="text-xl font-bold">کمپین اینفلوئنسرها</h3>
+                  </div>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                    مشارکت ۵ تا ۷ چهره مطرح اهواز جهت معرفی مکانیزم‌های جدید و پیوست‌های فرهنگی. محتوای تولیدی بر مفاهیم «امنیت»، «اصالت» و «مشارکت اجتماعی» متمرکز خواهد بود.
+                  </p>
+                  <div className="flex gap-4">
+                     <span className="bg-amber-500/10 text-amber-400 text-xs px-3 py-1 rounded-full border border-amber-500/20 italic">بودجه: ۵۰ تا ۱۵۰ میلیون</span>
+                  </div>
+                </div>
+                <div className="w-full md:w-64 aspect-video bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center text-slate-600 italic text-sm text-center p-6">
+                   [محتوای ویدیویی اینفلوئنسر با تم نوروزی]
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'budget' && (
+            <div className="space-y-10">
+              <section>
+                <h3 className="text-2xl font-black mb-6 flex items-center gap-3 text-amber-500 uppercase tracking-tighter">
+                  <DollarSign /> برآورد بودجه عملیاتی (تخمین نهایی)
+                </h3>
+                <BudgetTable />
+              </section>
+
+              <section className="bg-gradient-to-br from-blue-900/20 to-amber-900/20 rounded-3xl p-8 border border-amber-500/20">
+                <h3 className="text-2xl font-black mb-6 flex items-center gap-3 text-amber-400">
+                  <Zap className="animate-pulse" /> پیشنهاد بهبود: مدل هدایت ترافیک (Option 2)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <p className="text-slate-300 leading-relaxed">
+                      برای افزایش بازدهی طبقات و تبدیل مشتریان «تک‌مقصدی» به خریداران فعال، پیاده‌سازی مکانیزم **Conversion Multiplier** پیشنهاد می‌شود:
+                    </p>
+                    <ul className="space-y-3">
+                      {[
+                        "ارائه ووچر پاداش لمیز فقط در صورت خرید از طبقات ۱ تا ۳",
+                        "فعال‌سازی کارت همدلی پس از اسکن ۳ ایستگاه QR در نقاط کور مجتمع",
+                        "ایجاد مدل Matched Funding (حمایت برندهای بزرگ از انتخاب مشتری)",
+                        "تزریق رایحه بهاری شکوفه نارنج در تهویه (Olfactory Branding)"
+                      ].map((item, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-sm text-slate-300">
+                          <CheckCircle2 size={16} className="text-emerald-500" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+                    <h4 className="font-bold mb-4 text-emerald-400">تحلیل هزینه-فایده:</h4>
+                    <div className="space-y-4 text-sm text-slate-400">
+                      <div className="flex justify-between">
+                        <span>هزینه مازاد اجرایی:</span>
+                        <span className="text-white font-mono">کمتر از ۵٪ بودجه کل</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>پیش‌بینی رشد پاخور طبقات:</span>
+                        <span className="text-white font-mono">+۱۵٪ تا ۲۵٪</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>تأثیر بر وفاداری مشتری:</span>
+                        <span className="text-white font-mono">بسیار بالا</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white/5 rounded-3xl p-8 border border-white/10">
+                   <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                     <Award className="text-emerald-500" /> شاخص‌های کلیدی عملکرد (KPI)
+                   </h3>
+                   <div className="space-y-6">
+                     <div className="flex justify-between items-end border-b border-white/5 pb-4">
+                        <div className="text-slate-400 text-sm">نرخ رشد پاخور (Footfall)</div>
+                        <div className="text-xl font-bold text-emerald-400">+۳۰٪</div>
+                     </div>
+                     <div className="flex justify-between items-end border-b border-white/5 pb-4">
+                        <div className="text-slate-400 text-sm">تعداد شماره موبایل جدید (CRM)</div>
+                        <div className="text-xl font-bold text-emerald-400">۲۰,۰۰۰+</div>
+                     </div>
+                     <div className="flex justify-between items-end border-b border-white/5 pb-4">
+                        <div className="text-slate-400 text-sm">تعداد تراکنش خرید هدف</div>
+                        <div className="text-xl font-bold text-emerald-400">۵,۰۰۰ فاکتور</div>
+                     </div>
+                   </div>
+                </div>
+                
+                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 border border-white/10 relative overflow-hidden">
+                   <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl"></div>
+                   <h3 className="text-xl font-bold mb-4">تحلیل بازگشت سرمایه (ROI)</h3>
+                   <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                     سرمایه‌گذاری روی این کمپین منجر به افزایش فروش نقد و اعتباری در اسفندماه شده و با جمع‌آوری دیتای ۲۰ هزار مشتری، هزینه تبلیغات مستقیم رویال پارس را در طول سال ۱۴۰۵ به شدت کاهش می‌دهد. همچنین برندینگ مسئولیت‌پذیر، وفاداری مشتریان را در رقابت با سایر مراکز خرید بیمه می‌کند.
+                   </p>
+                   <div className="flex items-center gap-2 text-amber-500 font-bold italic">
+                     <TrendingUp size={20} />
+                     توسعه پایدار برند رویال پارس
+                   </div>
+                </div>
+              </section>
+            </div>
+          )}
+
+          {activeTab === 'print' && (
+            <div className="space-y-8 no-print">
+              <div className="bg-white/5 rounded-3xl p-10 border border-white/10 text-center">
+                <div className="w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-amber-400">
+                  <FileText size={40} />
+                </div>
+                <h2 className="text-2xl font-bold mb-4">نسخه نهایی جهت پرینت</h2>
+                <p className="text-slate-400 mb-8 max-w-md mx-auto leading-relaxed">
+                   تمامی اطلاعات استراتژیک، بودجه‌بندی و پیوست‌های فرهنگی در قالب یک فایل استاندارد جهت ارائه در جلسه هیئت مدیره آماده چاپ می‌باشد.
+                </p>
+                <button 
+                  onClick={handlePrint}
+                  className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-10 py-4 rounded-2xl flex items-center gap-2 mx-auto transition-all shadow-xl shadow-amber-500/20"
+                >
+                  <Printer size={20} />
+                  چاپ گزارش نهایی
+                </button>
+              </div>
+
+              <div className="hidden">
+                <div id="printable-section" className="printable-content text-black bg-white font-sans p-10 text-right" dir="rtl">
+                  <div className="flex justify-between items-center border-b-2 border-gray-800 pb-6 mb-10">
+                    <div>
+                      <h1 className="text-3xl font-black">گزارش استراتژیک کمپین نوروز ۱۴۰۵</h1>
+                      <p className="text-gray-600 mt-2">مجتمع تجاری رویال پارس اهواز - سند محرمانه</p>
+                    </div>
+                    <div className="text-left">
+                      <p className="font-bold italic">Royal Pars Mall</p>
+                      <p className="text-sm">تاریخ: اسفند ۱۴۰۴</p>
+                    </div>
+                  </div>
+
+                  <section className="mb-10">
+                    <h2 className="text-2xl font-bold border-r-4 border-amber-500 pr-4 mb-6">۱. چشم‌انداز و امنیت برند</h2>
+                    <p className="leading-relaxed text-gray-800 text-lg">
+                      کمپین نوروز ۱۴۰۵ با تاکید بر حفظ وقار برند و رعایت حساسیت‌های اجتماعی طراحی گردیده است. هدف اصلی، ارتقای جایگاه رویال پارس به عنوان یک برند «مسئولیت‌پذیر و ایمن» در بازار رقابتی منطقه می‌باشد.
+                    </p>
+                  </section>
+
+                  <section className="mb-10">
+                    <h2 className="text-2xl font-bold border-r-4 border-amber-500 pr-4 mb-6">۲. برآورد بودجه نهایی</h2>
+                    <BudgetTable isPrint={true} />
+                  </section>
+
+                  <section className="mb-10 page-break">
+                    <h2 className="text-2xl font-bold border-r-4 border-amber-500 pr-4 mb-6">۳. استراتژی اجرایی و فرهنگی</h2>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="border p-4 rounded-lg">
+                        <h3 className="font-bold mb-2">پیوست فرهنگی</h3>
+                        <p className="text-sm">برگزاری رویدادهای هنری زنده با تمرکز بر اصالت ایرانی و ایجاد اتمسفر آرام‌بخش.</p>
+                      </div>
+                      <div className="border p-4 rounded-lg">
+                        <h3 className="font-bold mb-2">فین‌تک و BNPL</h3>
+                        <p className="text-sm">فعال‌سازی تارا و اسنپ‌پی جهت تسهیل خرید و افزایش قدرت انتخاب مشتری.</p>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div className="mt-20 pt-10 border-t border-gray-300 text-center text-sm text-gray-500">
+                    این سند به صورت سیستمی تولید شده و به منزله پروپوزال رسمی بخش مارکتینگ است.
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      <footer className="max-w-6xl mx-auto px-6 py-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm gap-4 no-print">
+        <p>© ۱۴۰۴ کلیه حقوق استراتژیک متعلق به دپارتمان مارکتینگ رویال پارس است.</p>
+        <div className="flex gap-6">
+          <span className="hover:text-amber-500 cursor-pointer transition-colors">امنیت برند و حساسیت‌ها</span>
+          <span className="hover:text-amber-500 cursor-pointer transition-colors">گزارش شفافیت</span>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
